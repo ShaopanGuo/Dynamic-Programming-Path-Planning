@@ -18,12 +18,14 @@ vmax = v0 * (1 + rand(numEdge,1));      % generate maximum velocity for each
 len0 = 10 * 1000;                       % average road length: 10km               
 len = len0 * (1 + rand(numEdge,1));     % generate road lenth for each
                                         % road segment.
+alpha = zeros(1,numEdge);
+
 % Generate roads.                                        
-road12 = road(len(1),vmax(1));
-road13 = road(len(2),vmax(2));
-road24 = road(len(3),vmax(3));
-road25 = road(len(4),vmax(4));
-road35 = road(len(5),vmax(5));
-road46 = road(len(6),vmax(6));
-road56 = road(len(7),vmax(7));
+road12 = road(len(1),vmax(1),alpha(1));
+road13 = road(len(2),vmax(2),alpha(2));
+road24 = road(len(3),vmax(3),alpha(3));
+road25 = road(len(4),vmax(4),alpha(4));
+road35 = road(len(5),vmax(5),alpha(5));
+road46 = road(len(6),vmax(6),alpha(6));
+road56 = road(len(7),vmax(7),alpha(7));
 roads = [road12, road13, road24, road25, road35, road46, road56];
