@@ -26,3 +26,4 @@ road25 = road(len(4),vmax(4));
 road35 = road(len(5),vmax(5));
 road46 = road(len(6),vmax(6));
 road56 = road(len(7),vmax(7));
+roads = [road12, road13, road24, road25, road35, road46, road56];
