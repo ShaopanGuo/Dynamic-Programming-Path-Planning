@@ -1,8 +1,0 @@
-% main function
-
-% Generate a map.
-s = [1 1 2 2 3 4 5];
-t = [2 3 4 5 5 6 6];
-G = graph(s,t);
-L = dilaplacian(G);    % This map is a directed
-plot(G)
