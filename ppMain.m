@@ -29,3 +29,16 @@ road35 = road(len(5),vmax(5),alpha(5));
 road46 = road(len(6),vmax(6),alpha(6));
 road56 = road(len(7),vmax(7),alpha(7));
 roads = [road12, road13, road24, road25, road35, road46, road56];
+
+% Electric Vehicle
+m = 2300;        % Total mass of the vehicle: 2300kg
+Voc = 340;       % Open circuit voltage: 340v
+Crr = 0.01;      % Rolling resistance coefficient
+g = 9.8;         % Gravitational acceleration: 9.8m/s
+c2 = Crr * m * g * cos(0);     % Rolling resistance
+rho = 1.23;                    % Air density
+Af = 2.1;                      % Vehicle frontal area: 2.1m^2
+Cd = 0.38;                     % Aerodynamic drag coefficient
+c3 = 0.5 * rho * Af * Cd;
+gamma = 1.2;                   % The conversion rate: Ib = gamma*Ia
+c1 = 30;                       % The ratio between Fmot and Ia: Fmot = c1 * Ia
