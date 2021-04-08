@@ -6,7 +6,7 @@ s = [1 1 2 2 3 4 5];
 t = [2 3 4 5 5 6 6];
 G = digraph(s,t);         % This map is a digraph.
 I = full(incidence(G)); 
-plot(G)
+% plot(G)
 
 numInter = size(I,1);
 numEdge = size(I,2);
@@ -50,4 +50,6 @@ reward25 = ppReward(roads(4).velocity,roads(4).length,roads(4).slope,m,Voc,c1,ga
 reward35 = ppReward(roads(5).velocity,roads(5).length,roads(5).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
 reward46 = ppReward(roads(6).velocity,roads(6).length,roads(6).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
 reward56 = ppReward(roads(7).velocity,roads(7).length,roads(7).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
-reward = [reward12, reward13, reward24, reward25, reward35, reward46, reward56];
+rewards = [reward12, reward13, reward24, reward25, reward35, reward46, reward56];
+
+[path, cost] = ppDP(rewards,I,numInter)
