@@ -18,11 +18,19 @@ classdef EV
     end
     
     methods
-        function obj = EV(m,Voc,Crr,Af)
+        function obj = EV(m,Voc,Crr,Af,c1,gamma)
+            if nargin < 6, gamma = ""; end
+            if nargin < 5, c1 = ""; end
+            if nargin < 4, Af = ""; end
+            if nargin < 3, Crr = ""; end
+            if nargin < 2, Voc = ""; end
+            if nargin < 1, m = ""; end
             obj.mass = double(m);
             obj.Voc = double(Voc);
             obj.Crr = double(Crr);
             obj.Af = double(Af);
+            obj.c1 = double(c1);
+            obj.gamma = double(gamma);
         end
         
         function obj = set.mass(obj,m)
@@ -36,6 +44,12 @@ classdef EV
         end
         function obj = set.Af(obj,Af)
             obj.Af = double(Af);
+        end
+        function obj = set.c1(obj,c1)
+            obj.c1 = double(c1);
+        end
+        function obj = set.gamma(obj,gamma)
+            obj.gamma = double(gamma);
         end
     end
 end

@@ -8,7 +8,6 @@ G = digraph(s,t);         % This map is a digraph.
 I = full(incidence(G)); 
 plot(G)
 
-%% Generate rewards.
 numInter = size(I,1);
 numEdge = size(I,2);
 v0 = converterMPH(70);                  % average velocity limitation: 70mph 
@@ -42,3 +41,13 @@ Cd = 0.38;                     % Aerodynamic drag coefficient
 c3 = 0.5 * rho * Af * Cd;
 gamma = 1.2;                   % The conversion rate: Ib = gamma*Ia
 c1 = 30;                       % The ratio between Fmot and Ia: Fmot = c1 * Ia
+
+% Generate rewards.
+reward12 = ppReward(roads(1).velocity,roads(1).length,roads(1).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+reward13 = ppReward(roads(2).velocity,roads(2).length,roads(2).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+reward24 = ppReward(roads(3).velocity,roads(3).length,roads(3).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+reward25 = ppReward(roads(4).velocity,roads(4).length,roads(4).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+reward35 = ppReward(roads(5).velocity,roads(5).length,roads(5).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+reward46 = ppReward(roads(6).velocity,roads(6).length,roads(6).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+reward56 = ppReward(roads(7).velocity,roads(7).length,roads(7).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+reward = [reward12, reward13, reward24, reward25, reward35, reward46, reward56];

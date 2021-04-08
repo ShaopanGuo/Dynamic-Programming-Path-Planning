@@ -5,9 +5,7 @@ fad = 0.5 * rho * Af * Cd * vmax^2;    % air resistance
 fgx = m * g * sin(alpha);              % grade resistance
 ft = frr + fad + fgx;                  % traction force
 
-Ia = ft / c1;        % armature current
-Ib = gamma * Ia;     % battery current
+Ia = fr / c1;        % armature 
 
-tf = l / vmax;       % This is length "l", not number 1.
-reward = Voc * Ib * tf;
+tf = l / vmax;
 end
