@@ -1,6 +1,7 @@
-function mps = converterMPH(MPH)
+function [mps kph fps]= converterMPH(MPH)
 % Convert mph to m/s.
 
-kph = 0.6213712 * MPH;
-mps = (kph*1000) / (60*60);
+kph = 1.609344 * MPH;
+mps = 0.44704 * MPH;
+fps = 1.46666667 * MPH;
 end

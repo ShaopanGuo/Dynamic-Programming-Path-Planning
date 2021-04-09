@@ -10,7 +10,7 @@ I = full(incidence(G));
 
 numInter = size(I,1);
 numEdge = size(I,2);
-v0 = converterMPH(70);                  % average velocity limitation: 70mph 
+[v0,~,~] = converterMPH(70);                  % average velocity limitation: 70mph 
 rng(1)
 vmax = v0 * (1 + rand(numEdge,1));      % generate maximum velocity for each
                                         % road segment.
