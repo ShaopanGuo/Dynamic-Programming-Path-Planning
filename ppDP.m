@@ -1,22 +1,22 @@
-function [path, cost] = ppDP(rewards,I,state)
-if state == 1
-    path = [1];
+function [path, cost] = ppDP(rewards,I,state,finalstate)
+if state == finalstate
+    path = [finalstate];
     cost = 0;
 else
-    tok = find(I(state,:)==1);    % Find paths ending with intersection k
-    num_tok = size(tok,2);    % number of paths ending with intersection k
-    temp_reward = rewards(tok);
-    temp_cost = zeros(1, num_tok);
-    temp_pstate = zeros(1, num_tok);
-    for i = 1:num_tok
-        temp_pstate(i) = find(I(:,tok(i))==-1);
-        [~, cc] = ppDP(rewards,I,temp_pstate(i)); 
+    fromk = find(I(state,:)==-1);    % Find paths starting with intersection state
+    num_fromk = size(fromk,2);       % number of paths starting with intersection k
+    temp_reward = rewards(fromk);
+    temp_cost = zeros(1, num_fromk);
+    temp_nstate = zeros(1, num_fromk);
+    for i = 1:num_fromk
+        temp_nstate(i) = find(I(:,fromk(i))==1);
+        [~, cc] = ppDP(rewards,I,temp_nstate(i),finalstate); 
         temp_cost(i) = cc + temp_reward(i);
     end
     [MM, II] = min(temp_cost);
     cost = MM;
-    [pp, ~] = ppDP(rewards,I,temp_pstate(II));
-    path = [pp state];
+    [pp, ~] = ppDP(rewards,I,temp_nstate(II),finalstate);
+    path = [state pp];
 end
 end
 

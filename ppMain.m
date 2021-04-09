@@ -52,4 +52,6 @@ reward46 = ppReward(roads(6).velocity,roads(6).length,roads(6).slope,m,Voc,c1,ga
 reward56 = ppReward(roads(7).velocity,roads(7).length,roads(7).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
 rewards = [reward12, reward13, reward24, reward25, reward35, reward46, reward56];
 
-[path, cost] = ppDP(rewards,I,numInter)
+[path, cost] = ppR(rewards,I,numInter);
+
+[path, cost] = ppDP(rewards,I,1, numInter);
