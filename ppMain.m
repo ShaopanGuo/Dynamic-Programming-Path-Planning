@@ -17,17 +17,23 @@ vmax = v0 * (1 + rand(numEdge,1));      % generate maximum velocity for each
 len0 = 10 * 1000;                       % average road length: 10km               
 len = len0 * (1 + rand(numEdge,1));     % generate road lenth for each
                                         % road segment.
-alpha = zeros(1,numEdge);
+% alpha = zeros(1,numEdge);
+alpha = pi/4 * rand(1,numEdge);
 
 % Generate roads.                                        
-road12 = road(len(1),vmax(1),alpha(1));
-road13 = road(len(2),vmax(2),alpha(2));
-road24 = road(len(3),vmax(3),alpha(3));
-road25 = road(len(4),vmax(4),alpha(4));
-road35 = road(len(5),vmax(5),alpha(5));
-road46 = road(len(6),vmax(6),alpha(6));
-road56 = road(len(7),vmax(7),alpha(7));
-roads = [road12, road13, road24, road25, road35, road46, road56];
+% road12 = road(len(1),vmax(1),alpha(1));
+% road13 = road(len(2),vmax(2),alpha(2));
+% road24 = road(len(3),vmax(3),alpha(3));
+% road25 = road(len(4),vmax(4),alpha(4));
+% road35 = road(len(5),vmax(5),alpha(5));
+% road46 = road(len(6),vmax(6),alpha(6));
+% road56 = road(len(7),vmax(7),alpha(7));
+% roads = [road12, road13, road24, road25, road35, road46, road56];
+
+roads = [];
+for i=1:numEdge
+    roads = [roads road(len(i),vmax(i),alpha(i))];
+end
 
 % Electric Vehicle
 m = 2300;        % Total mass of the vehicle: 2300kg
@@ -43,14 +49,20 @@ gamma = 1.2;                   % The conversion rate: Ib = gamma*Ia
 c1 = 30;                       % The ratio between Fmot and Ia: Fmot = c1 * Ia
 
 % Generate rewards.
-reward12 = ppReward(roads(1).velocity,roads(1).length,roads(1).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
-reward13 = ppReward(roads(2).velocity,roads(2).length,roads(2).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
-reward24 = ppReward(roads(3).velocity,roads(3).length,roads(3).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
-reward25 = ppReward(roads(4).velocity,roads(4).length,roads(4).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
-reward35 = ppReward(roads(5).velocity,roads(5).length,roads(5).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
-reward46 = ppReward(roads(6).velocity,roads(6).length,roads(6).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
-reward56 = ppReward(roads(7).velocity,roads(7).length,roads(7).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
-rewards = [reward12, reward13, reward24, reward25, reward35, reward46, reward56];
+% reward12 = ppReward(roads(1).velocity,roads(1).length,roads(1).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+% reward13 = ppReward(roads(2).velocity,roads(2).length,roads(2).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+% reward24 = ppReward(roads(3).velocity,roads(3).length,roads(3).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+% reward25 = ppReward(roads(4).velocity,roads(4).length,roads(4).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+% reward35 = ppReward(roads(5).velocity,roads(5).length,roads(5).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+% reward46 = ppReward(roads(6).velocity,roads(6).length,roads(6).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+% reward56 = ppReward(roads(7).velocity,roads(7).length,roads(7).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho);
+% rewards = [reward12, reward13, reward24, reward25, reward35, reward46, reward56];
+
+rewards = [];
+for ii=1:numEdge
+    rewards = [rewards ppReward(roads(i).velocity,roads(i).length,...
+        roads(i).slope,m,Voc,c1,gamma,Crr, Af, Cd, g, rho)];
+end
 
 [path, cost] = ppR(rewards,I,numInter);
 
