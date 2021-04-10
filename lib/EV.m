@@ -144,7 +144,7 @@ classdef EV < handle
             else
                 obj.v_des = gipps(obj.dt,obj.x(2),obj.aMax,obj.vDes, ...
                     obj.bMax,refSig(1),obj.x(1),obj.Ln,refSig(2),obj.bnHat);
-                obj.kP_v = 100;
+%                 obj.kP_v = 100;
             end
                 obj.v_err = obj.v_des - obj.x(2);
                 obj.u = (obj.kP_v * obj.v_err + ...
