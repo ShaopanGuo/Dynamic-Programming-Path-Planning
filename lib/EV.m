@@ -13,6 +13,12 @@ classdef EV < handle
         tf
         alpha
         
+        vDes
+        aMax
+        bMax
+        bnHat
+        Ln
+        
         m       % Mass
         l       % Length
         
@@ -53,7 +59,8 @@ classdef EV < handle
     %% METHODS
     methods
         %% CONSTRUCTOR
-        function obj = EV(role,params, initStates, initInputs, gains, simTime, dt, alpha)
+        function obj = EV(role,params, initStates, initInputs, gains, ...
+                simTime, dt, alpha, Ln)
             obj.role = role;
             obj.Af = 2.1;
             obj.g = 9.8;
@@ -65,6 +72,12 @@ classdef EV < handle
             obj.dt = dt;
             obj.tf = simTime;
             obj.alpha = alpha;
+            
+            obj.vDes = 50;
+            obj.aMax = 2;
+            obj.bMax = -3;
+            obj.bnHat = -3.5;
+            obj.Ln = Ln;
             
             obj.m = params('Mass');
             obj.l = params('Length');
@@ -125,40 +138,26 @@ classdef EV < handle
                 i = find(refSig(1,:)>obj.x(1),1);
                 if isempty(i)
                     obj.v_des = 0;
-                    obj.v_err = obj.v_des - obj.x(2);
-                    obj.u = (obj.kP_v * obj.v_err + ...
-                    obj.kI_v * obj.v_err_sum + ...
-                    obj.kD_v * (obj.v_err - obj.v_err_prev)/obj.dt);
-                     
-                    obj.v_err_sum = obj.v_err_sum + obj.v_err;                
-                    obj.v_err_prev = obj.v_err; 
                 else
                     obj.v_des = refSig(2,i);
-                    obj.v_err = obj.v_des - obj.x(2);
-                    obj.u = (obj.kP_v * obj.v_err + ...
-                    obj.kI_v * obj.v_err_sum + ...
-                    obj.kD_v * (obj.v_err - obj.v_err_prev)/obj.dt);
-                     
-                    obj.v_err_sum = obj.v_err_sum + obj.v_err;                
-                    obj.v_err_prev = obj.v_err;
                 end
-%                 event = refSig(1,1);
-%                 for i=0:numInter-1
-%                     while obj.x(1)<event
-%                         obj.v_des = refSig(2,i+1);
-%                         obj.v_err = obj.v_des - obj.x(2);
-%                         obj.u = (obj.kP_v * obj.v_err + ...
-%                                  obj.kI_v * obj.v_err_sum + ...
-%                                  obj.kD_v * (obj.v_err - obj.v_err_prev)/obj.dt);
-%                      
-%                         obj.v_err_sum = obj.v_err_sum + obj.v_err;                
-%                         obj.v_err_prev = obj.v_err;
-%                     end
-%                     event = event + refSig(1,i+1);
-%                 end
             else
-                obj.u = 0;
+                obj.v_des = gipps(obj.dt,obj.x(2),obj.aMax,obj.vDes, ...
+                    obj.bMax,refSig(1),obj.x(1),obj.Ln,refSig(2),obj.bnHat);
+                obj.kP_v = 100;
             end
+                obj.v_err = obj.v_des - obj.x(2);
+                obj.u = (obj.kP_v * obj.v_err + ...
+                obj.kI_v * obj.v_err_sum + ...
+                obj.kD_v * (obj.v_err - obj.v_err_prev)/obj.dt);
+%                 obj.u = (((obj.kP_v * obj.v_err + ...
+%                 obj.kI_v * obj.v_err_sum + ...
+%                 obj.kD_v * (obj.v_err - obj.v_err_prev)/obj.dt) ...
+%                 +obj.g*sin(obj.alpha))*obj.m+obj.c2*obj.x(2)^2+obj.c2) ...
+%                 *obj.gamma/obj.c1;
+                     
+                obj.v_err_sum = obj.v_err_sum + obj.v_err;                
+                obj.v_err_prev = obj.v_err;
         end
     end
     

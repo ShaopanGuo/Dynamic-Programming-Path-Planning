@@ -17,7 +17,7 @@ numEdge = size(I,2);
 rng(1)
 vmax = v0 * (1 + rand(numEdge,1));      % generate maximum velocity for each
                                         % road segment.
-len0 = 1000;                       % average road length: 1km               
+len0 = 10*1000;                       % average road length: 1km               
 len = len0 * (1 + rand(numEdge,1));     % generate road lenth for each
                                         % road segment.
 alpha = zeros(1,numEdge);
@@ -77,30 +77,47 @@ ev1_params = containers.Map({'Mass', 'Length'}, {2300, 5});
 ev1_initStates = [0,...               % position
     0]';                              % velocity
 
+Ln = 7.62;                            
+%     the effective size of vehicle n; that is the physical length plus
+%     a margin into which the following vehicle is not willing to introduce
+%     even at rest
+
+ev2_initStates = [-Ln,...             % position
+    0]';                              % velocity
+
 ev1_initInputs = [0];
 
 ev1_gains = containers.Map({'P_r','I_r','D_r', ...
     'P_v','I_v','D_v'}, ...
     {0.0, 0.0, 0.0, ...
-    100.0, 0.0, 0.0});
+    3.0, 0.0, 0.0});
 
-simulationTime = 150;
-dt = 0.1;
+simulationTime = 1500;
+dt = 1;
 alpha = 0;
 role1 = 1;
+role2 = 2;
  
-ev1 = EV(role1,ev1_params, ev1_initStates, ev1_initInputs, ev1_gains, simulationTime,dt,alpha);
+ev1 = EV(role1,ev1_params, ev1_initStates, ev1_initInputs, ev1_gains, ...
+    simulationTime,dt,alpha,Ln);
+ev2 = EV(role2,ev1_params, ev2_initStates, ev1_initInputs, ev1_gains, ...
+    simulationTime,dt,alpha,Ln);
 
 %% Init. Data Fig.
-fig1 = figure('pos',[0 100 600 600]);
+fig1 = figure('pos',[0 50 700 700]);
 
-subplot(2,1,1)
+subplot(3,1,1)
 title('Position[m]')
 grid on;
 hold on;
 
-subplot(2,1,2)
+subplot(3,1,2)
 title('Velocity[m/s]')
+grid on;
+hold on;
+
+subplot(3,1,3)
+title('Spacing[m]')
 grid on;
 hold on;
 
@@ -116,18 +133,35 @@ for ii=1:numInter
         r1Des(ii) = r1Des(ii-1) + r1Temp(ii);
     end
 end
-commandSig = [r1Des; v1Des];
+commandSig1 = [r1Des; v1Des];
 for i = 1:simulationTime/dt
-    ev1.Ctrl(commandSig);
+    ev1.Ctrl(commandSig1);
     ev1.UpdateState();
     ev1_state = ev1.GetStates();
+    
+    commandSig2 = [ev1_state(1), ev1_state(2)];
+    ev2.Ctrl(commandSig2);
+    ev2.UpdateState();
+    ev2_state = ev2.GetStates();
     %%
     figure(1)
-    subplot(2,1,1)
-        plot(i*dt, ev1_state(1), '.')
+    subplot(3,1,1)
+        plot(i*dt, ev1_state(1), 'r.')
+        plot(i*dt, ev2_state(1), 'b.')
 
-    subplot(2,1,2)
-        plot(i*dt, ev1_state(2), '.')
-    
-    drawnow;
+    subplot(3,1,2)
+        plot(i*dt, ev1_state(2), 'r.')
+        plot(i*dt, ev2_state(2), 'b.')
+        
+    subplot(3,1,3)
+        plot(i*dt, ev1_state(1)-ev2_state(1), '.')
+        
+%      figure(1)
+%     subplot(2,1,1)
+%         plot(i*dt, ev2_state(1), '.')
+% 
+%     subplot(2,1,2)
+%         plot(i*dt, ev2_state(2), '.')
+%     
+%     drawnow;
 end
