@@ -9,7 +9,7 @@ bMax = -9.5;      % The most deceleration that the follower wishes to
 bnHat = -11.5;    % The most severe deceleration rate that vehicle n+1 
                   % estimate for vehicle n, in ft/s^2
 Ln = 25;          % The effective vehicle length, in ft.
-deltaT = 1;       % the apparent reation time, in s.
+dt = 1;       % the apparent reation time, in s.
 
 v_ = 79.64;     % in fts
 % v_ = 54.3;      % in mph
@@ -17,7 +17,7 @@ xn_ = 0;        % in ft
 x_ = -120;      % in ft
 vn_ = 76.81;    % in fts
 
-[v,v1,v2] = gipps(deltaT,v_,aMax,vDes,bMax,xn_,x_,Ln,vn_,bnHat);
+[v,v1,v2] = gipps(dt,v_,aMax,vDes,bMax,xn_,x_,Ln,vn_,bnHat);
 [v1mph,~,~] = converterFPS(v1);
 [v2mph,~,~] = converterFPS(v2);
 [vmph,~,~] = converterFPS(v);

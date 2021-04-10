@@ -1,8 +1,8 @@
-function [v,v1,v2] = gipps(deltaT,v_,aMax,vDes,bMax,xn_,x_,Ln,vn_,bnHat)
+function [v,v1,v2] = gipps(dt,v_,aMax,vDes,bMax,xn_,x_,Ln,vn_,bnHat)
 % The Gipps Model
 % This function is based on Eq. (2.12) in elefteriadou14 
 % v is the speed of vehicle n+1 at time t+Delta_t
-% deltaT is the apparent reation time, a constant for  all vehicles
+% dt is the apparent reation time, a constant for  all vehicles
 % v_ is the speed of vehicle n+1 at time t
 % aMax is the maximum acceleration which the driver of vehicle n+1 whishes
 %      whishes to undertake
@@ -18,8 +18,8 @@ function [v,v1,v2] = gipps(deltaT,v_,aMax,vDes,bMax,xn_,x_,Ln,vn_,bnHat)
 % bnHat is the most severe deceleration rate that vehicle n+1 estimates for
 %       vehicle n
 
-v1 = v_ + 2.5*aMax*deltaT*(1 - v_/vDes)*sqrt(0.025 + v_/vDes);
-v2 = bMax*deltaT + sqrt(bMax^2*deltaT^2 - bMax*(2*(xn_ - Ln - x_)-v_*deltaT-vn_^2/bnHat));
+v1 = v_ + 2.5*aMax*dt*(1 - v_/vDes)*sqrt(0.025 + v_/vDes);
+v2 = bMax*dt + sqrt(bMax^2*dt^2 - bMax*(2*(xn_ - Ln - x_)-v_*dt-vn_^2/bnHat));
 v = min([v1, v2]);
 end
 

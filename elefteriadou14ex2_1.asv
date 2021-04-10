@@ -1,7 +1,0 @@
-clear; close all; clc
-vDes = 75;        % The desired maximum speed of the following vehicle
-                  % in mph
-[~,~,vDes] = converterMPH(vDes);    % in fps                  
-aMax = 6.5;       % The maximum acceleration which the following vehicle 
-                  wishes                       
-                
