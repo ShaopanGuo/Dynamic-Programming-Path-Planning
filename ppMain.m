@@ -100,11 +100,11 @@ ev2_gains = containers.Map({'P_r','I_r','D_r', ...
     {0.0, 0.0, 0.0, ...
     100.0, 0.0, 0.0});
 
-simulationTime = 1500;
+simulationTime = 1734;
 dt = 1;
 alpha = 0;
-role1 = 1;
-role2 = 2;
+role1 = 1;        % Leader
+role2 = 2;        % Follower
  
 ev1 = EV(role1,ev1_params, ev1_initStates, ev1_initInputs, ev1_gains, ...
     simulationTime,dt,alpha,Ln);
@@ -115,21 +115,94 @@ ev3 = EV(role2,ev1_params, ev3_initStates, ev1_initInputs, ev2_gains, ...
 ev4 = EV(role2,ev1_params, ev4_initStates, ev1_initInputs, ev2_gains, ...
     simulationTime,dt,alpha,Ln);
 
+% %% Init. Data Fig.
+% fig1 = figure('pos',[0 50 700 700]);
+% 
+% subplot(3,1,1)
+% title('Position[m]')
+% grid on;
+% hold on;
+% 
+% subplot(3,1,2)
+% title('Velocity[m/s]')
+% grid on;
+% hold on;
+% 
+% subplot(3,1,3)
+% title('Spacing[m]')
+% grid on;
+% hold on;
+% 
+% %%
+% numInter = size(path,2);
+% r1Temp = len(path)';
+% r1Des = zeros(1,numInter);
+% v1Des = vmax(path)';
+% for ii=1:numInter
+%     if ii == 1
+%         r1Des(ii) = r1Temp(ii);
+%     else
+%         r1Des(ii) = r1Des(ii-1) + r1Temp(ii);
+%     end
+% end
+% commandSig1 = [r1Des; v1Des];
+% for i = 1:simulationTime/dt
+%     ev1.Ctrl(commandSig1);
+%     ev1.UpdateState();
+%     ev1_state = ev1.GetStates();
+%     
+%     commandSig2 = [ev1_state(1), ev1_state(2)];
+%     ev2.Ctrl(commandSig2);
+%     ev2.UpdateState();
+%     ev2_state = ev2.GetStates();
+%     
+%     commandSig3 = [ev2_state(1), ev2_state(2)];
+%     ev3.Ctrl(commandSig3);
+%     ev3.UpdateState();
+%     ev3_state = ev3.GetStates();
+%     
+%     commandSig4 = [ev3_state(1), ev3_state(2)];
+%     ev4.Ctrl(commandSig4);
+%     ev4.UpdateState();
+%     ev4_state = ev4.GetStates();
+%     %%
+%     figure(1)
+%     subplot(3,1,1)
+%         plot(i*dt, ev1_state(1), 'r.')
+% %         plot(i*dt, ev2_state(1), 'b.')
+% 
+%     subplot(3,1,2)
+%         plot(i*dt, ev1_state(2), 'r.')
+% %         plot(i*dt, ev2_state(2), 'b.')
+%         
+%     subplot(3,1,3)
+%         plot(i*dt, ev1_state(1)-ev2_state(1),'r.', ...
+%              i*dt, ev1_state(1)-ev3_state(1),'b.', ...
+%              i*dt, ev1_state(1)-ev4_state(1),'g.')
+% end
+
 %% Init. Data Fig.
 fig1 = figure('pos',[0 50 700 700]);
 
-subplot(3,1,1)
+subplot(2,1,1)
 title('Position[m]')
 grid on;
 hold on;
 
-subplot(3,1,2)
+subplot(2,1,2)
 title('Velocity[m/s]')
 grid on;
 hold on;
 
-subplot(3,1,3)
+fig2 = figure('pos',[700 50 700 700]);
+
+subplot(2,1,1)
 title('Spacing[m]')
+grid on;
+hold on;
+
+subplot(2,1,2)
+title('Velocity Tracking[m/s]')
 grid on;
 hold on;
 
@@ -167,32 +240,26 @@ for i = 1:simulationTime/dt
     ev4_state = ev4.GetStates();
     %%
     figure(1)
-    subplot(3,1,1)
+    subplot(2,1,1)
         plot(i*dt, ev1_state(1), 'r.')
 %         plot(i*dt, ev2_state(1), 'b.')
 
-    subplot(3,1,2)
+    subplot(2,1,2)
         plot(i*dt, ev1_state(2), 'r.')
 %         plot(i*dt, ev2_state(2), 'b.')
-        
-    subplot(3,1,3)
+
+   figure(2)        
+    subplot(2,1,1)
         plot(i*dt, ev1_state(1)-ev2_state(1),'r.', ...
              i*dt, ev1_state(1)-ev3_state(1),'b.', ...
              i*dt, ev1_state(1)-ev4_state(1),'g.')
-%         plot(i*dt, ev1_state(1)-ev2_state(1),'r.', ...
-%              i*dt, ev1_state(1)-ev3_state(1),'g.')
-%         hold on
-%         plot(i*dt, ev1_state(1)-ev2_state(1), '.')
-%         hold on
-%         plot(i*dt, ev1_state(1)-ev2_state(1), '.')
-%         legend('1')
-        
-%      figure(1)
-%     subplot(2,1,1)
-%         plot(i*dt, ev2_state(1), '.')
-% 
-%     subplot(2,1,2)
-%         plot(i*dt, ev2_state(2), '.')
-%     
-%     drawnow;
+         legend('$p_1 - p_2$', '$p_1 - p_3$', '$p_1 - p_4$', ...
+             'Interpreter', 'latex')
+         
+    subplot(2,1,2)
+        plot(i*dt, ev1_state(2)-ev2_state(2),'r.', ...
+             i*dt, ev1_state(2)-ev3_state(2),'b.', ...
+             i*dt, ev1_state(2)-ev4_state(2),'g.')
+         legend('$v_1 - v_2$', '$v_1 - v_3$', '$v_1 - v_4$', ...
+             'Interpreter', 'latex')
 end

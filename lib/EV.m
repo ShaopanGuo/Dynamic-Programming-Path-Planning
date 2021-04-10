@@ -1,7 +1,7 @@
 classdef EV < handle
     %% MEMBERS
     properties
-        role
+        role        % Leder: role=1; Follower: role = 2
         Af
         g
         rho
