@@ -71,6 +71,8 @@ end
 
 [path, cost] = ppDP(rewards,I,1, numInter);
 
+path = [1, 3, 7];
+
 %% INIT. PARAMS
 ev1_params = containers.Map({'Mass', 'Length'}, {2300, 5});
 
@@ -100,7 +102,7 @@ ev2_gains = containers.Map({'P_r','I_r','D_r', ...
     {0.0, 0.0, 0.0, ...
     100.0, 0.0, 0.0});
 
-simulationTime = 1734;
+simulationTime = 1773;
 dt = 1;
 alpha = 0;
 role1 = 1;        % Leader
